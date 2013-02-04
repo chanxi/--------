@@ -82,7 +82,7 @@ if(cutchar(localUrl,"http://",".com")=="wapp.baidu"){
 function mark_fav(){//电脑签到			   
 	$("<img class='markPic1' src='http://imgsrc.baidu.com/forum/pic/item/d2a29e315c6034a8bc82c368cb1349540823767a.jpg'/>").appendTo($("#mybbb"));//箭头标签
 	$(".markPic1").css({"position":"absolute","position":"fixed","top":"0px","right":"230px","z-index":"10003"});//箭头样式
-	$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://itianda.com/paste/313/raw/'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($("#mybbb"));//按钮标签
+	$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='https://raw.github.com/chanxi/--------/master/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($("#mybbb"));//按钮标签
 	$(".markPic2").css({"position":"absolute","position":"fixed","top":"190px","right":"30px","z-index":"10002","width":"230px","height":"70","cursor":"move","background":"url(http://imgsrc.baidu.com/forum/pic/item/dc8d124e251f95ca2f8ce95fc9177f3e66095261.jpg) no-repeat"});//按钮样式
 	$("#markPic2").bind('mouseenter', function() {//添加事件
 		$(".markPic2").attr("src", "http://imgsrc.baidu.com/forum/pic/item/6e98b7cad1c8a786c95231e76709c93d71cf5061.jpg");
