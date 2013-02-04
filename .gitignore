@@ -1,0 +1,23 @@
+<html>
+  <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>样式测试</title>
+		<script type="text/javascript"src="script/jquery_min.js" ></script>
+		<script type="text/javascript"src="script/main.js" ></script>
+		<link rel="stylesheet" href="style/style.css" />
+	</head>
+	<body>
+	<a href='javascript:$(".S_Body").toggle();'>显示</a>
+	<a href='javascript: S_createDiv();'>创建</a>
+	<div align="center">
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+		1111111111111111<br><br><hr><br><br>
+	</div>
+	</body>
+</html>
