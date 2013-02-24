@@ -105,7 +105,7 @@ function mark_fav(){//电脑签到
 
 
 	$(".white_content").get(0).innerHTML+="请自行检查有没有签到正确，如有错误，欢迎反馈<a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a><br>";
-	$(".white_content").get(0).innerHTML+="因为服务器随时可能不可用，请加<a href='http://tieba.baidu.com/p/2110672062'  target='_blank'>蝉曦吧地址更新专用帖</a>为书签，保证可以及时更新本签到书签<br>";
+	$(".white_content").get(0).innerHTML+="因为服务器随时可能不可用，请加<a href='http://tieba.baidu.com/p/2110672062?see_lz=1'  target='_blank'>蝉曦吧地址更新专用帖</a>为书签，保证可以及时更新本签到书签<br>";
 
 	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>特别注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
