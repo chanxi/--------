@@ -37,6 +37,8 @@
 修正连续数的显示
 ------2013.01.17 v1.1.2------
 修正因为百度wapp签到构造改变导致的不能签到
+------2013.02.24 v1.1.3------
+更新1:加入随即后缀，防止因浏览器缓存引起的漏签
 *********************************************************************************/
 var bai;
 var rt="ok";
@@ -49,7 +51,7 @@ var localUrl = window.location.href;
 
 
 
-document.body.innerHTML+="<style>html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,object,iframe,form,blockquote,fieldset,input,textarea,code,address,caption,cite,code,em,i,ins{margin:0;padding:0;}.mybbb{text-align:left;font-family:微软雅黑;}#mark_header{display: block;background-color:white;width:90%;height:30px;position:absolute;position: fixed;top:0;padding-top:4px;margin-left:40px; z-index:10002;font-size:20px;}#mybbb a,#mybbb a:link,#mybbb a:visited{ color: #d79a1e; text-decoration: none; }#mybbb a:hover{ color: black; text-decoration: none;}#mybbb #mark_header ul{padding-left:25%; padding-right:25%; }#mybbb #mark_header ul li{list-style-type:none;float:left;width:20%;}#myli5{text-align:right;}#mybbb .black_overlay{display: block;position:absolute;position:fixed;top:0;left:0px;padding-top:0px; width:100%;height:100%;background-color:black;z-index:10000;-moz-opacity: 0.8;opacity:.90;filter: alpha(opacity=80);}#mybbb .white_content {display: block;position: absolute;top: 38px;left: 18%;width: 50%;padding: 16px;border: 2px solid orange;background-color: white;z-index:10002;overflow: auto;-moz-opacity: 0.8;opacity:.80;filter: alpha(opacity=80);}</style>";//基本样式
+document.body.innerHTML+="<style>html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,object,iframe,form,blockquote,fieldset,input,textarea,code,address,caption,cite,code,em,i,ins{margin:0;padding:0;}.mybbb{text-align:left;font-family:微软雅黑;}#mark_header{display: block;background-color:white;width:90%;height:30px;position:absolute;position: fixed;top:0;padding-top:4px;margin-left:40px; z-index:10002;font-size:20px;}#mybbb a,#mybbb a:link,#mybbb a:visited{ color: #d79a1e; text-decoration: none; }#mybbb a:hover{ color: black; text-decoration: none;}#mybbb #mark_header ul{padding-left:5%; padding-right:35%; padding-top:4px; }#mybbb #mark_header ul li{list-style-type:none;float:left;width:20%;}#myli5{text-align:right;}#mybbb .black_overlay{display: block;position:absolute;position:fixed;top:0;left:0px;padding-top:0px; width:100%;height:100%;background-color:black;z-index:10000;-moz-opacity: 0.8;opacity:.90;filter: alpha(opacity=80);}#mybbb .white_content {display: block;position: absolute;top: 38px;left: 5%;width: 60%;padding: 16px;border: 2px solid orange;background-color: white;z-index:10002;overflow: auto;-moz-opacity: 0.8;opacity:.80;filter: alpha(opacity=80);}</style>";//基本样式
 //以下构建了基本的页面显示框架
 createTag("div",document.body,{"id":"mybbb","className":"mybbb"});//我的根元素
 createTag("div",$id('mybbb'),{"id":"light","className":"white_content"});//显示层
@@ -65,7 +67,7 @@ createTag("a",$id("myli5"),{"id":"close_btn","href":"javascript:void(0)"});
 $id("close_btn").style.textalign = "right";
 $id("close_btn").innerHTML = "关闭";
 $id("close_btn").onclick = function(){  
-  				   div_allHid();  
+					   div_allHid();  
 				   };
 
 
@@ -107,9 +109,9 @@ function mark_fav(){//电脑签到
 
 	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>特别注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.01.17 v1.1.2------</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.02.24 v1.1.3------</span><br>";
 
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>更新1:修正因为百度wapp签到构造改变导致的不能签到</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>更新1:加入随即后缀，防止因浏览器缓存引起的漏签</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>特别提示:请不要在i贴吧页面使用本签到，请随便到那个贴吧的版面使用，并确保已登录！</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------------------------------</span><br>";
 
@@ -210,7 +212,7 @@ function checksigned(urlStr){
 
 		$.ajax({
 		 type: "get",
-		 url:  "http://tieba.baidu.com"+baEN[bai-1],
+		 url:  "http://tieba.baidu.com"+baEN[bai-1]+"&mmmm="+Math.random(),
 		 data: "", 
 		 dataType: "text", 
 		 success: function (data) { 
