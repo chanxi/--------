@@ -39,6 +39,9 @@
 修正因为百度wapp签到构造改变导致的不能签到
 ------2013.02.24 v1.1.3------
 更新1:加入随即后缀，防止因浏览器缓存引起的漏签
+------2013.03.28 v1.1.4------
+1:代码维护提示
+2.增加广告
 *********************************************************************************/
 var bai;
 var rt="ok";
@@ -84,7 +87,7 @@ if(cutchar(localUrl,"http://",".com")=="wapp.baidu"){
 function mark_fav(){//电脑签到			   
 	$("<img class='markPic1' src='http://imgsrc.baidu.com/forum/pic/item/d2a29e315c6034a8bc82c368cb1349540823767a.jpg'/>").appendTo($("#mybbb"));//箭头标签
 	$(".markPic1").css({"position":"absolute","position":"fixed","top":"0px","right":"230px","z-index":"10003"});//箭头样式
-	$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='https://raw.github.com/chanxi/--------/master/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($("#mybbb"));//按钮标签
+	$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($("#mybbb"));//按钮标签
 	$(".markPic2").css({"position":"absolute","position":"fixed","top":"190px","right":"30px","z-index":"10002","width":"230px","height":"70","cursor":"move","background":"url(http://imgsrc.baidu.com/forum/pic/item/dc8d124e251f95ca2f8ce95fc9177f3e66095261.jpg) no-repeat"});//按钮样式
 	$("#markPic2").bind('mouseenter', function() {//添加事件
 		$(".markPic2").attr("src", "http://imgsrc.baidu.com/forum/pic/item/6e98b7cad1c8a786c95231e76709c93d71cf5061.jpg");
@@ -108,15 +111,18 @@ function mark_fav(){//电脑签到
 	$(".white_content").get(0).innerHTML+="因为服务器随时可能不可用，请加<a href='http://tieba.baidu.com/p/2110672062?see_lz=1'  target='_blank'>蝉曦吧地址更新专用帖</a>为书签，保证可以及时更新本签到书签<br>";
 
 	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>特别注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.02.24 v1.1.3------</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:green;'>请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.03.28 v1.1.4------</span><br><br><br>";
 
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>更新1:加入随即后缀，防止因浏览器缓存引起的漏签</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>特别提示:请不要在i贴吧页面使用本签到，请随便到那个贴吧的版面使用，并确保已登录！</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------------------------------</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:70pt;padding-top:20px;'>特别提示：</span><br><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>1.由于本作品为本人业余闲暇之作，本来未有推广之心，但由于人心吧友推广的原因，还是有一些吧友在使用本签到工具，所以本人也保持这能签到的链接存在。现在因为个人学习各工作的压力，不能保证代码的可用性，<span  style='font-size:20pt;'>所以在此做一个调查，借此判断使用的人数，希望使用本工具的吧友们能积极参与，投票的人数会影响到本工具的支持时间以及后续工具的开发</span>本调查是投票贴的形式，只需要鼠标点击一下即可，谢谢你的参与:</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:20pt;'>调查投票传送门:<a href='http://tieba.baidu.com/p/2238131576' target='_blank'>调查贴</a>，本人会根绝投票总人数来考虑该工具的支持</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>2:请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>    javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>   http://pastebin.com/raw.php?i=YGb5nCmY<br>   https://raw.github.com/chanxi/--------/master/sign.js<br>   http://chanxi.ueuo.com/script/sign.js</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>3:本签到工具的手机app版已经发布测试版，目前包括ios（越狱）和android两个版本，以后可能陆续增加别的平台的支持，请前往<a href='http://tieba.baidu.com/p/2047715431' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:green;'>------------------------------</span><br>";
 
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>备注1:请转载的童鞋去掉我的个人贴吧信息，以免引起误会</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>备注2:感谢以下吧友的空间支持</span><a href=\"http://www.baidu.com/p/itianda?from=tieba\" target=\"_blank\">@itianda</a> <br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:green;'>备注1:请转载的童鞋去掉我的个人贴吧信息，以免引起误会</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:green;'>备注2:感谢以下吧友的空间支持</span><a href=\"http://www.baidu.com/p/itianda?from=tieba\" target=\"_blank\">@itianda</a> <br>";
 
 	$(".white_content").get(0).innerHTML+="程序开始工作...<br>---开始收集I贴吧中的贴吧名，请等待 ......<br>";
 
