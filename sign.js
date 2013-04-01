@@ -114,8 +114,8 @@ function mark_fav(){//电脑签到
 
 	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:green;'>请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.03.28 v1.1.4------</span><br><br><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>1.增加广告</span><br><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.03.28 v1.1.4------</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>1.增加广告</span><br>";
 	
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>调查投票传送门:<a href='http://tieba.baidu.com/p/2238131576' target='_blank'>调查贴</a>，本人会根绝投票总人数来考虑该工具的支持</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>2:请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>    javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>   http://pastebin.com/raw.php?i=YGb5nCmY<br>   https://raw.github.com/chanxi/--------/master/sign.js<br>   http://chanxi.ueuo.com/script/sign.js</span><br>";
