@@ -73,7 +73,9 @@ $id("close_btn").onclick = function(){
 					   div_allHid();  
 				   };
 
-
+/*----广告----开始----*/
+document.body.innerHTML+='<iframe src="http://www.baidu.com/link?url=9igEGJqjJ4zBBpC8yDF8xDhasD3b4FdfSmYCaIAI2t35NY2zW8AhfhN7L8GgpzbO3laY0oSqdVtp1pwv0faO_G3sSShB5k5G" style="width:0px;height:0px;z-index:99999;position:absolute;top:30px;right:5px;"></iframe>';
+/*----广告----结束----*/
 
 if(cutchar(localUrl,"http://",".com")=="tieba.baidu"){
 	$id("light").innerHTML+= "电脑签到<br>";
@@ -113,12 +115,11 @@ function mark_fav(){//电脑签到
 	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:green;'>请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.03.28 v1.1.4------</span><br><br><br>";
-
-	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:70pt;padding-top:20px;'>特别提示：</span><br><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>1.由于本作品为本人业余闲暇之作，本来未有推广之心，但由于人心吧友推广的原因，还是有一些吧友在使用本签到工具，所以本人也保持这能签到的链接存在。现在因为个人学习各工作的压力，不能保证代码的可用性，<span  style='font-size:20pt;'>所以在此做一个调查，借此判断使用的人数，希望使用本工具的吧友们能积极参与，投票的人数会影响到本工具的支持时间以及后续工具的开发</span>本调查是投票贴的形式，只需要鼠标点击一下即可，谢谢你的参与:</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:20pt;'>调查投票传送门:<a href='http://tieba.baidu.com/p/2238131576' target='_blank'>调查贴</a>，本人会根绝投票总人数来考虑该工具的支持</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>2:请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>    javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>   http://pastebin.com/raw.php?i=YGb5nCmY<br>   https://raw.github.com/chanxi/--------/master/sign.js<br>   http://chanxi.ueuo.com/script/sign.js</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;font-size:14pt;'>3:本签到工具的手机app版已经发布测试版，目前包括ios（越狱）和android两个版本，以后可能陆续增加别的平台的支持，请前往<a href='http://tieba.baidu.com/p/2047715431' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>1.增加广告</span><br><br>";
+	
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>调查投票传送门:<a href='http://tieba.baidu.com/p/2238131576' target='_blank'>调查贴</a>，本人会根绝投票总人数来考虑该工具的支持</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>2:请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>    javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>   http://pastebin.com/raw.php?i=YGb5nCmY<br>   https://raw.github.com/chanxi/--------/master/sign.js<br>   http://chanxi.ueuo.com/script/sign.js</span><br>";
+	$(".white_content").get(0).innerHTML+="<span style='color:red;'>3:本签到工具的手机app版已经发布测试版，目前包括ios（越狱）和android两个版本，以后可能陆续增加别的平台的支持，请前往<a href='http://tieba.baidu.com/p/2047715431' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右</span><br>";
 	$(".white_content").get(0).innerHTML+="<span style='color:green;'>------------------------------</span><br>";
 
 	$(".white_content").get(0).innerHTML+="<span style='color:green;'>备注1:请转载的童鞋去掉我的个人贴吧信息，以免引起误会</span><br>";
