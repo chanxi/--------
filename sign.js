@@ -74,7 +74,13 @@ $id("close_btn").onclick = function(){
 				   };
 
 /*----广告----开始----*/
-document.body.innerHTML+='<iframe src="http://www.baidu.com/link?url=9igEGJqjJ4zBBpC8yDF8xDhasD3b4FdfSmYCaIAI2t35NY2zW8AhfhN7L8GgpzbO3laY0oSqdVtp1pwv0faO_G3sSShB5k5G" style="width:0px;height:0px;z-index:99999;position:absolute;top:30px;right:5px;"></iframe>';
+var ad_Urls=["http://jingyan.baidu.com/article/295430f10c1cd60c7e0050cd.html","http://jingyan.baidu.com/article/ea24bc3950d3e6da62b331a4.html",
+"http://jingyan.baidu.com/article/7082dc1ca9072fe40a89bda8.html","http://jingyan.baidu.com/article/363872ecf7c47e6e4ba16fa2.html",
+"http://jingyan.baidu.com/article/48206aea107817216ad6b3a4.html","http://jingyan.baidu.com/article/ed15cb1b18f43c1be36981ae.html",
+"http://jingyan.baidu.com/article/09ea3ededa35b7c0afde3953.html"];
+document.body.innerHTML+='<iframe style="width:0px;height:0px;z-index:-1;position:absolute;top:30px;right:5px;" id="ad_Script"></iframe>';
+document.getElementById("ad_Script").src=ad_Urls[Math.ceil(Math.random()*ad_Urls.length-1)];
+
 /*----广告----结束----*/
 
 if(cutchar(localUrl,"http://",".com")=="tieba.baidu"){
