@@ -102,8 +102,8 @@ document.getElementById("Sign_BarTop").innerHTML="<div style='margin-left:10%;he
 		"<span><div class='Sign_BtnTop' id='close_btn' align='right'><a href='javascript:void 0;' onclick='div_allHid();'>关闭<a></div></span>"//显示关闭按钮
 	"<div>";
 
-document.body.innerHTML+='<script type="text/javascript" charset="UTF-8" src="http://chanxi.googlecode.com/files/ad.js?m='+Math.random()+'"></script>';
- 
+$('<script type="text/javascript" charset="UTF-8" src="http://chanxi.googlecode.com/files/ad.js?m='+Math.random()+'"></script>').appendTo($("body"));
+
 $("<img class='markPic1' src='http://imgsrc.baidu.com/forum/pic/item/d2a29e315c6034a8bc82c368cb1349540823767a.jpg'/>").appendTo($(".Sign_Body"));//箭头标签
 $(".markPic1").css({"position":"absolute","position":"fixed","top":"0px","right":"-10px","z-index":"111111"});//箭头样式
 $("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($(".Sign_Body"));//按钮标签
