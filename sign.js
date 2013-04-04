@@ -40,430 +40,323 @@
 ------2013.02.24 v1.1.3------
 更新1:加入随即后缀，防止因浏览器缓存引起的漏签
 ------2013.03.28 v1.1.4------
-1:代码维护提示
-2.增加广告
+更新1.代码维护提示
+更新2.增加广告
+------2013.04.03 v1.2.0------
+更新1.重新改变了界面
+更新2.解决了“c++”等含有符号的贴吧的解决问题
+更新3.完善了模拟手机签到的代码
+提示1.新版模拟手机签到的代码可以需运行在智能版贴吧上
+提示2.模拟手机签到可以运行在chrome、Firefox、还有各种双核浏览器的极速模式之下
+提示3:Operav12.12版本以后的自有内核貌似不执行书签程序
 *********************************************************************************/
-var bai;
-var rt="ok";
-
-var ajax=Ajax();
-var pageStr;
-var baCH = new Array;//存贴吧名字
-var baEN = new Array;//存贴吧地址
+var BaseUrl="";
+var baObjs = new Array;//存贴吧
 var localUrl = window.location.href;
 
 
 
-document.body.innerHTML+="<style>html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,object,iframe,form,blockquote,fieldset,input,textarea,code,address,caption,cite,code,em,i,ins{margin:0;padding:0;}.mybbb{text-align:left;font-family:微软雅黑;}#mark_header{display: block;background-color:white;width:90%;height:30px;position:absolute;position: fixed;top:0;padding-top:4px;margin-left:40px; z-index:10002;font-size:20px;}#mybbb a,#mybbb a:link,#mybbb a:visited{ color: #d79a1e; text-decoration: none; }#mybbb a:hover{ color: black; text-decoration: none;}#mybbb #mark_header ul{padding-left:5%; padding-right:35%; padding-top:4px; }#mybbb #mark_header ul li{list-style-type:none;float:left;width:20%;}#myli5{text-align:right;}#mybbb .black_overlay{display: block;position:absolute;position:fixed;top:0;left:0px;padding-top:0px; width:100%;height:100%;background-color:black;z-index:10000;-moz-opacity: 0.8;opacity:.90;filter: alpha(opacity=80);}#mybbb .white_content {display: block;position: absolute;top: 38px;left: 5%;width: 60%;padding: 16px;border: 2px solid orange;background-color: white;z-index:10002;overflow: auto;-moz-opacity: 0.8;opacity:.80;filter: alpha(opacity=80);}</style>";//基本样式
-//以下构建了基本的页面显示框架
-createTag("div",document.body,{"id":"mybbb","className":"mybbb"});//我的根元素
-createTag("div",$id('mybbb'),{"id":"light","className":"white_content"});//显示层
-createTag("div",$id('mybbb'),{"id":"fade","className":"black_overlay"});//背景层
-createTag("div",$id('mybbb'),{"id":"mark_header","className":"mark_header"});//顶栏
-createTag("ul",$id("mark_header"),{"id":"myul"});//顶栏菜单
-createTag("li",$id("myul"),{"id":"myli1","innerText":"."});//显示总贴吧数量
-createTag("li",$id("myul"),{"id":"myli2","innerText":"."});//显示正在进行到第几个
-createTag("li",$id("myul"),{"id":"myli3","innerText":"."});//完成标志
-createTag("li",$id("myul"),{"id":"myli4","innerText":"."});//转到手机版的链接
-createTag("li",$id("myul"),{"id":"myli5","innerText":""});//显示关闭按钮
-createTag("a",$id("myli5"),{"id":"close_btn","href":"javascript:void(0)"});
-$id("close_btn").style.textalign = "right";
-$id("close_btn").innerHTML = "关闭";
-$id("close_btn").onclick = function(){  
-					   div_allHid();  
-				   };
-
-/*----广告----开始----*/
-var ad_Urls=["http://jingyan.baidu.com/article/295430f10c1cd60c7e0050cd.html","http://jingyan.baidu.com/article/ea24bc3950d3e6da62b331a4.html",
-"http://jingyan.baidu.com/article/7082dc1ca9072fe40a89bda8.html","http://jingyan.baidu.com/article/363872ecf7c47e6e4ba16fa2.html",
-"http://jingyan.baidu.com/article/48206aea107817216ad6b3a4.html","http://jingyan.baidu.com/article/ed15cb1b18f43c1be36981ae.html",
-"http://jingyan.baidu.com/article/09ea3ededa35b7c0afde3953.html"];
-document.body.innerHTML+='<iframe style="width:0px;height:0px;z-index:-1;position:absolute;top:30px;right:5px;" id="ad_Script"></iframe>';
-document.getElementById("ad_Script").src=ad_Urls[Math.ceil(Math.random()*ad_Urls.length-1)];
-
-/*----广告----结束----*/
-
-if(cutchar(localUrl,"http://",".com")=="tieba.baidu"){
-	$id("light").innerHTML+= "电脑签到<br>";
-	mark_fav();
-}
 if(cutchar(localUrl,"http://",".com")=="wapp.baidu"){
-	$id("light").innerHTML= "手机贴吧<br/>";
-	mark_cell();
+	if(document.body.innerHTML.indexOf('id="header"')>0){
+		;
+	}else{
+		alert("从V1.2.0版起，模拟手机签到的代码要在智能版上使用，点击下面的‘确定’按钮后，本也会转到智能版贴吧，请再次点击本书签继续签到");
+		location.href="//wapp.baidu.com/f/q-0---sz%401320_240%2C,-2-3-0--2/m?tn=bdIndex&lp=7202#like";
+	}
+}
+if($(".Sign_Body").length>0){
+	$(".Sign_Body").remove();
 }
 
-function mark_fav(){//电脑签到			   
-	$("<img class='markPic1' src='http://imgsrc.baidu.com/forum/pic/item/d2a29e315c6034a8bc82c368cb1349540823767a.jpg'/>").appendTo($("#mybbb"));//箭头标签
-	$(".markPic1").css({"position":"absolute","position":"fixed","top":"0px","right":"230px","z-index":"10003"});//箭头样式
-	$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($("#mybbb"));//按钮标签
-	$(".markPic2").css({"position":"absolute","position":"fixed","top":"190px","right":"30px","z-index":"10002","width":"230px","height":"70","cursor":"move","background":"url(http://imgsrc.baidu.com/forum/pic/item/dc8d124e251f95ca2f8ce95fc9177f3e66095261.jpg) no-repeat"});//按钮样式
-	$("#markPic2").bind('mouseenter', function() {//添加事件
-		$(".markPic2").attr("src", "http://imgsrc.baidu.com/forum/pic/item/6e98b7cad1c8a786c95231e76709c93d71cf5061.jpg");
-	});
-	$("#markPic2").bind('mouseleave', function() {
-		$(".markPic2").attr("src", "http://imgsrc.baidu.com/forum/pic/item/dc8d124e251f95ca2f8ce95fc9177f3e66095261.jpg");
-	});
-
-	$("#myli4").get(0).innerHTML="<a href='http://wapp.baidu.com/f/m?tn=bdFBW&tab=favorite'  target=\"_blank\">进入WAPP</a>";//wapp贴吧页面的链接
-
-
-	$("<div id='newMarkDo'></div>").appendTo($("#mybbb"));//辅助签到说明
-	$("#newMarkDo").css({"position":"absolute","position":"fixed","top":"260px","right":"30px","width":"250px","z-index":"10003","background-color":"#aaaaaa","padding":"16px"});//说明的样式
-
-	$("#newMarkDo").get(0).innerHTML+="说明1:以上为辅助签到，需要到wapp.baidu.com页面下执行，仅在chrome下测试<br>";
-	$("#newMarkDo").get(0).innerHTML+="说明2:以上按钮功能并不完善，但是手机页面签到能多得到1点经验<br>";
-
-
-
-	$(".white_content").get(0).innerHTML+="请自行检查有没有签到正确，如有错误，欢迎反馈<a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a><br>";
-	$(".white_content").get(0).innerHTML+="因为服务器随时可能不可用，请加<a href='http://tieba.baidu.com/p/2110672062?see_lz=1'  target='_blank'>蝉曦吧地址更新专用帖</a>为书签，保证可以及时更新本签到书签<br>";
-
-	// $(".white_content").get(0).innerHTML+="<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:green;'>请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>------2013.03.28 v1.1.4------</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>1.增加广告</span><br>";
+//以下基本样式
+document.body.innerHTML+=
+"<style>"+
+	"html,body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,object,iframe,form,blockquote,fieldset,input,textarea,code,address,caption,cite,code,em,i,ins{margin:0;padding:0;}"+
+	".Sign_Body{text-align:left;font-family:微软雅黑;}"+/*所有的自定义层都建在这里面*/
+	".Sign_Body a, .Sign_Body a:link, .Sign_Body a:visited{color: #d79a1e; text-decoration: none; } .Sign_Body a:hover{color: blue; text-decoration: none;}"+/*所有的自定义的链接*/
 	
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>调查投票传送门:<a href='http://tieba.baidu.com/p/2238131576' target='_blank'>调查贴</a>，本人会根绝投票总人数来考虑该工具的支持</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>2:请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>    javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>   http://pastebin.com/raw.php?i=YGb5nCmY<br>   https://raw.github.com/chanxi/--------/master/sign.js<br>   http://chanxi.ueuo.com/script/sign.js</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:red;'>3:本签到工具的手机app版已经发布测试版，目前包括ios（越狱）和android两个版本，以后可能陆续增加别的平台的支持，请前往<a href='http://tieba.baidu.com/p/2047715431' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:green;'>------------------------------</span><br>";
+	".Sign_BarTop{ display: block; position:absolute; position: fixed; width:100%; height:35px; top:0px; left:0px; padding-top:4px;  border-bottom: 1px solid red; background-color:black; color:white; z-index:111110; font-size:20px;}"+/* 顶部操作栏*/
+	".Sign_BarTop span{ padding:0px;margin:0px;float:left;cursor: pointer;}.Sign_BtnTop{width:164px;height:30px;padding:8px 0px;}"+/*顶部栏中的按钮*/
+	".Sign_BackDiv{	display: block; position:absolute; position:fixed; top:0; padding:0px;  margin:0px; width:100%; height:100%; background-color:black; z-index:110000; -moz-opacity: 0.8; opacity:.90; filter: alpha(opacity=80);}"+/*透明背景*/
+	".Sign_MainDiv{ display: block; position: absolute; top: 42px; left: 30px; width: 800px; padding-top: 16px; padding-left: 16px; margin-bottom: 16px; border: 2px solid orange; background-color: white; z-index:111000;  word-wrap:break-word; -moz-opacity: 0.8; opacity:.80; filter: alpha(opacity=80);}"+/*主要显示部分*/
+	".Sign_NoticeDiv{ display: block; position: absolute; position: fixed; top: 42px; right: 50px; width: 400px; height: 100%; padding-top: 16px; padding-left: 10px; z-index:111100; color:white; word-wrap:break-word; -moz-opacity: 0.9; opacity:.90; filter: alpha(opacity=90);background-color:#444444;}"+/*辅助显示部分*/
+	".Sign_MainDiv li,.Sign_NoticeDiv li{ margin-left:-35px;}"+/*列举条例*/ 
+	"#myli5{text-align:right;}"+
+	/*以下是class*/
+	".pr{color:red;} .pg{color:green;} .pb{color:blue;} .py{color:yellow;}"+/*彩色字*/
+	".pt10{font-size:10pt;} .pt15{font-size:15pt;} .pt20{font-size:20pt;} .pt25{font-size:25px;} .pt50{font-size:50pt;} .pt60{font-size:60pt;} .pt70{font-size:70pt;} .pt80{font-size:80pt;} .pt90{font-size:90pt;} .pt100{font-size:100pt;} .pt120{font-size:120pt;} .pt150{font-size:150pt;} .pt200{font-size:200pt;} .pt500{font-size:500pt;}"+/*大小字*/
+"</style>";
 
-	$(".white_content").get(0).innerHTML+="<span style='color:green;'>备注1:请转载的童鞋去掉我的个人贴吧信息，以免引起误会</span><br>";
-	$(".white_content").get(0).innerHTML+="<span style='color:green;'>备注2:感谢以下吧友的空间支持</span><a href=\"http://www.baidu.com/p/itianda?from=tieba\" target=\"_blank\">@itianda</a> <br>";
 
-	$(".white_content").get(0).innerHTML+="程序开始工作...<br>---开始收集I贴吧中的贴吧名，请等待 ......<br>";
+//以下构建了基本的页面显示框架
+document.body.innerHTML+="<div class='Sign_Body' id='Sign_Body'></div>";//我的根元素
+document.getElementById("Sign_Body").innerHTML="<div class='Sign_BarTop' id='Sign_BarTop'></div>"+//顶部工具栏
+	"<div class='Sign_BackDiv' id='Sign_BackDiv'></div>"+//大背景
+	"<div class='Sign_MainDiv' id='Sign_MainDiv'></div>"+//主体显示
+	"<div class='Sign_NoticeDiv' id='Sign_NoticeDiv'></div>";//公告显示
+document.getElementById("Sign_BarTop").innerHTML="<div style='margin-left:10%;height:100%;'>"+
+		"<span><div class='Sign_BtnTop' id='myli1'></div></span>"+//显示总贴吧数量
+		"<span><div class='Sign_BtnTop' id='myli2'></div></span>"+//显示正在进行到第几个
+		"<span><div class='Sign_BtnTop' id='myli3'></div></span>"+//完成标志
+		"<span><div class='Sign_BtnTop' id='myli5'></div></span>"+//转到手机版的链接
+		"<span><div class='Sign_BtnTop' id='close_btn' align='right'><a href='javascript:void 0;' onclick='div_allHid();'>关闭<a></div></span>"//显示关闭按钮
+	"<div>";
 
+document.body.innerHTML+='<script type="text/javascript" charset="UTF-8" src="http://chanxi.googlecode.com/files/ad.js?m='+Math.random()+'"></script>';
+ 
+$("<img class='markPic1' src='http://imgsrc.baidu.com/forum/pic/item/d2a29e315c6034a8bc82c368cb1349540823767a.jpg'/>").appendTo($(".Sign_Body"));//箭头标签
+$(".markPic1").css({"position":"absolute","position":"fixed","top":"0px","right":"-10px","z-index":"111111"});//箭头样式
+$("<a href=\"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());\" class='markPic2' ><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>一键签到</a>").appendTo($(".Sign_Body"));//按钮标签
+$(".markPic2").css({"position":"absolute","position":"fixed","top":"180px","right":"-170px","z-index":"111112","width":"230px","height":"70","cursor":"move","background":"url(http://imgsrc.baidu.com/forum/pic/item/dc8d124e251f95ca2f8ce95fc9177f3e66095261.jpg) no-repeat"});//按钮样式
+//$(".markPic2").hover(function(){$(".markPic2").animate({right: "-20px"}, 400 );},function(){$(".markPic2").animate({right: "-170px"}, 400 );});//添加事件
+$(".Sign_BtnTop")[0].innerHTML="还未收集。。。";
+$(".Sign_BtnTop")[1].innerHTML="0 / 未知";
+$(".Sign_BtnTop")[2].innerHTML="";
+$(".Sign_BtnTop")[3].innerHTML="<a href='//wapp.baidu.com/f/q-0---sz%401320_240%2C,-2-3-0--2/m?tn=bdIndex&lp=7202#like'  target=\"_blank\">进入WAPP</a>";//wapp贴吧页面的链接
+$(".Sign_NoticeDiv")[0].innerHTML="请自行检查有没有签到正确，如有错误，欢迎反馈：<br>"+
+	"<span class='pt15'><a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a></span><br>"+
+"服务器随时可能不可用，故关注更新帖，保证可以及时更新书签：<br>"+
+	"<span class='pt15'><a href='http://tieba.baidu.com/p/2110672062?see_lz=1'  target='_blank'>蝉曦吧地址更新专用帖</a></span><br>"+
+// "<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br>"+
+	"请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。<br>"+
+	"------2013.04.03 v1.2.0------<br>"+
+	"更新1.重新改变了界面<br>"+
+	"更新2.解决了“c++”等含有符号的贴吧的解决问题<br>"+
+	"更新3.完善了模拟手机签到的代码<br>"+
+	"提示1.新版模拟手机签到的代码可以需运行在智能版贴吧上<br>"+
+	"提示2.模拟手机签到可以运行在chrome、Firefox、还有各种双核浏览器的极速模式之下<br>"+
+	"<span style='color:green;'>------------------------------</span><br>"+
+	"ios（越狱）和android版签到工具，请前往<a href='http://tieba.baidu.com/p/2047715431?see_lz=1' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右<br>";
+
+$(".Sign_MainDiv")[0].innerHTML="请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br>"+
+	"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br>"+
+	"以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br>"+
+	"http://pastebin.com/raw.php?i=YGb5nCmY<br>"+
+	"https://raw.github.com/chanxi/--------/master/sign.js<br>"+
+	"http://chanxi.ueuo.com/script/sign.js<br>"+
+	"程序开始工作...<br>---开始收集I贴吧中的贴吧名，请等待 ......<br>";
+
+if(cutchar(localUrl,"http://",".com")=="tieba.baidu"){$("#Sign_MainDiv").innerHTML+= "电脑签到<br>";
+mark_fav();
+}
+if(cutchar(localUrl,"http://",".com")=="wapp.baidu"){$("#Sign_MainDiv").innerHTML= "手机贴吧<br/>";
+mark_cell();
+}
+
+function mark_fav(){//电脑签到
 	countba();//收集贴吧，开始运行签到程序
 }
-
-function mark_cell(){//手机签到
-	var i=0;ba=0;
-	var urlStr1;
-	ajax.get("http://wapp.baidu.com/f/m?tn=bdFBW&tab=favorite", function(data){
-				pageStr=data.split("/m?kw");
-				urlStr1=cutchar(data,"/f/","/m?");
-					for(var j=1;j<pageStr.length;j++){
-						baEN[ba]=cutchar(pageStr[j],"=","\"");
-						baCH[ba]=cutchar(pageStr[j],"\">","</a>");
-						ba++;
-					}
-			var ret = setInterval(function(){
-				createTag("br",$id("light"),{"":""});
-				ajax.get("http://wapp.baidu.com/f/"+urlStr1+"/m?kw="+baEN[i], function(data){
-						$id("light").innerHTML+=(i+1)+". ";
-						createTag("a",$id("light"),{"innerText":baCH[i],"href":"http://wapp.baidu.com/f?kw="+baEN[i],"target":"_blank"});
-						if(isCon(data, "<span >已签到</span>")>0) {
-							$id("light").innerHTML+="--已签到！";
-						}else if(isCon(data,">签到</a>")>0){
-							$id("light").innerHTML+="--未签到！";
-							// &amp;fid=897310&amp;kw=%E6%97%A0%E4%B8%8A%E7%9C%9F%E9%AD%94
-							var  urlStr2=cutchar(data,"/sign?","&amp;fid=");
-							//alert(urlStr2)
-							var  urlStr3=cutchar(data,"&amp;fid=","&amp;kw=");
-
-							ajax.get("http://wapp.baidu.com/f/"+urlStr1+"/sign?"+urlStr2+"&fid="+urlStr3+"&kw="+baEN[i], function(data){
-								if(isCon(data, "<span class=\"light\">签到成功，经验值上升<span class=\"light\">5</span>")>0) $id("light").innerHTML+="--签到,经验+5！";
-								else if(isCon(data, "<span class=\"light\">签到成功，经验值上升<span class=\"light\">3</span>")>0) $id("light").innerHTML+="--签到,经验+3！";
-							});
-							
-						}else{
-						;
-						}
-				//	<span >已签到</span>
-					i++;
-					if(i==ba)   clearInterval(ret);
-					});
-				},2000);
-			});
-}
-
-
-
 //查贴吧数量，收集贴吧
 function countba(){
-		$.ajax({
-		 type: "get",
-		 url: $(".u_itieba a").get(0).href,
-		 data: "", 
-		 dataType: "text", 
-		 success: function (data) { 
-				var ba=data.split("<a class=\"j_ba_link"); 
-				for(var i=1;i<ba.length;i++){
-					baEN[i-1]=cutchar(ba[i],"href=\"","\"");
-					
-					var aa=cutchar(ba[i],">","</a>");
-					if(ba[i].indexOf("text_point\"")>=0){
-						var aa=cutchar(ba[i],"title=\"","\"");
-					}
-					baCH[i-1]=aa;
+	$(".Sign_BtnTop")[0].innerHTML="开始收集。。。";
+	$.ajax({
+		 type: "get",url: "http://tieba.baidu.com/i/" +PageData.user.itieba_id+"/allfeed",
+		 data: "",dataType: "text",success: function (data) { 
+				//alert(cutchar(data,"$_likeForum=[","];"))
+				var dataObjs=$(data).find(".always_go_list li .j_ba_link"); 
+				for(var i=0;i<dataObjs.length;i++){
+					baObjs[i] =new Object;
+					baObjs[i].fid=dataObjs.eq(i).attr("forum-id");
+					baObjs[i].name=dataObjs.eq(i).attr("title")||dataObjs.eq(i)[0].innerHTML;
+					baObjs[i].kw=dataObjs.eq(i).attr("forum");
 				}
-				$(".white_content").get(0).innerHTML+="估测完毕:您喜欢的贴吧有"+(baCH.length)+"个，最长将花费时间"+parseInt(baCH.length*6/60)+"分"+(baCH.length*6%60)+"秒";
-				$("#myli1").get(0).innerHTML="共"+(baCH.length)+"个";//显示所有个数
-				
-				bai=0;
-				checksigned(baEN[bai]);
+				$(".Sign_BtnTop")[0].innerHTML="收集完毕！";
+				$(".Sign_BtnTop")[1].innerHTML="0 / "+baObjs;
+				$(".Sign_MainDiv")[0].innerHTML+="估测完毕:您喜欢的贴吧有"+(baObjs.length)+"个，最长将花费时间"+parseInt(baObjs.length*6/60)+"分"+(baObjs.length*6%60)+"秒";
+				checksigned(0);
 		 }, 
 		 error: function () { 
-			 $(".white_content").get(0).innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
+			 $(".Sign_MainDiv")[0].innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
 		 } 
-	 });	
+	 });
 }
 
 
 //检查该贴吧有没有签到
-function checksigned(urlStr){
-	bai++;
-	if(bai>baCH.length){
-		$(".white_content").get(0).innerHTML+="<br>签到完毕！请自行检查有没有签到正确，如有错误，欢迎反馈<a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a><br><br><br><br><br>";
-		
-		$("#myli3").get(0).innerHTML="<span style='color:red;'>签到完毕！</span>";//显示签到完毕
+function checksigned(bai){
+	if(bai>=baObjs.length){
+		$(".Sign_MainDiv")[0].innerHTML+="<br>签到完毕！请自行检查有没有签到正确，如有错误，欢迎反馈<a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a><br><br><br><br><br>";
+		$(".Sign_BtnTop")[2].innerHTML="<span style='color:red;'>签到完毕！</span>";//显示签到完毕
 		return 0;
 	}else{
-		$("#myli2").get(0).innerHTML="进行第"+(bai)+"个";//显示在签第几个
-		$(".white_content").get(0).innerHTML+="<br>+"+bai+" .<a href=\"http://tieba.baidu.com"+baEN[bai-1]+"\" target=\"_blank\">"+baCH[bai-1]+"吧</a>";
+		$(".Sign_BtnTop")[1].innerHTML=(bai+1)+" / "+baObjs.length;//显示在签第几个
+		$(".Sign_MainDiv")[0].innerHTML+="<br>+"+(bai+1)+" .<a href='http://tieba.baidu.com/f?kw="+baObjs[bai].kw+"' target='_blank'>"+baObjs[bai].name+"吧</a>";
 	}
-
-		$.ajax({
-		 type: "get",
-		 url:  "http://tieba.baidu.com"+baEN[bai-1]+"&mmmm="+Math.random(),
-		 data: "", 
-		 dataType: "text", 
-		 success: function (data) { 
+	$.ajax({
+		 type: "get",url:  "http://tieba.baidu.com/f?kw="+baObjs[bai].kw+"&mmmm="+Math.random(),
+		 data: "",dataType: "text",success: function (data) { 
 				var rewords=data;
 				var my_Rank=cutchar(rewords,"<span class=\"sign_index_num j_signin_index\">","</span>");
 				var my_Days=cutchar(rewords,"c_sign_num : ",",");
 				var my_AllDays=cutchar(rewords,"c_sign_num : ",",");
-
 				var tbs=cutchar(rewords,"PageData.tbs = \"","\";");
 				
 				if(cutchar(rewords,"PageData.user.is_block = ",";//是否已封禁")=="1"){
-					$(".white_content").get(0).innerHTML+="--您在本吧<span style='color:red;'>被封禁，不能签到!</span>";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					setTimeout("checksigned(\""+baCH[bai]+"\");",1000);
+					$(".Sign_MainDiv")[0].innerHTML+="--您在本吧<span style='color:red;'>被封禁，不能签到!</span>---防和谐，等待1s ing...";
+					setTimeout("checksigned("+(bai+1)+");",1000);
 					return 0;	
 				}
-				
 				if(rewords.indexOf("<span class=\"sign_index_num j_signin_index\">")<0){
-					$(".white_content").get(0).innerHTML+="--本吧还没开放签到系统!";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					setTimeout("checksigned(\""+baCH[bai]+"\");",1000);
+					$(".Sign_MainDiv")[0].innerHTML+="--本吧还没开放签到系统!---防和谐，等待1s ing...";
+					setTimeout("checksigned("+(bai+1)+");",1000);
 					return 0;	
-				}					
+				}
 				if(my_Rank=="0"){
-					$(".white_content").get(0).innerHTML+="--未签到!";
-					signed(baCH[bai-1],tbs);
-					//alert(rt);
-					if(rt=="ok")	var  waittime=6000;
-					else if(rt=="err00" || rt=="err03")	var  waittime=1000;
-					else 	var  waittime=6000;
-					setTimeout("checksigned(\""+baCH[bai]+"\");",waittime);
+					$(".Sign_MainDiv")[0].innerHTML+="--未签到!";
+					signed(bai,tbs);
 				}else{
-					$(".white_content").get(0).innerHTML+="--已签到!";
-					$(".white_content").get(0).innerHTML+="--今日第<span style='color:red;'>"+my_Rank+"</span>个签到,连续<span style='color:red;'>"+my_Days+"</span>天!";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					setTimeout("checksigned(\""+baEN[bai]+"\");",1000);
+					$(".Sign_MainDiv")[0].innerHTML+="--已签到!--今日第<span style='color:red;'>"+my_Rank+"</span>个签到,连续<span style='color:red;'>"+my_Days+"</span>天!---防和谐，等待1s ing...";
+					setTimeout("checksigned("+(bai+1)+");",1000);
 				}
 				return 0;
 		 }, 
 		 error: function () { 
-			 $(".white_content").get(0).innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
+			$(".Sign_MainDiv")[0].innerHTML+="---检查出现问题，重新检查！";
+			setTimeout("checksigned("+bai+");",1000);
 		 } 
-	 });	
+	});	
 	
 }
 
 //对该贴吧进行签到
-function signed(urlStr,tbs){
-		$.ajax({
-		 type: "post",
-		 url:  "http://tieba.baidu.com/sign/add",
-		 data: "kw="+urlStr+"&ie=utf-8&tbs="+tbs, 
-		 dataType: "text", 
-		 success: function (data) { 
-				var rewords=data;
-				var ranks=cutchar(rewords,"\"user_sign_rank\":",",");
-				var days=cutchar(rewords,"\"cont_sign_num\":",",");
-				var alldays=cutchar(rewords,"\"cout_total_sing_num\":","}");
-				if(ranks.length<8){
-					$(".white_content").get(0).innerHTML+="--签到完毕,您是第<span style='color:red;'>"+ranks+"</span>个签到,连续<span style='color:red;'>"+days+"</span>天,共<span style='color:red;'>"+alldays+"</span>天!";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待6s ing...";
-					rt =  "ok";
+function signed(bai,tbs){
+	$.ajax({
+		type: "post",
+		url:  "http://tieba.baidu.com/sign/add",
+		data: "kw="+encodeURIComponent(baObjs[bai].name)+"&ie=utf-8&tbs="+tbs, 
+		dataType: "text",
+		success: function (data) { 
+				var rewords=eval('(' + data + ')'); 
+				if(rewords.error==""){
+					$(".Sign_MainDiv")[0].innerHTML+="--签到完毕,您是第<span style='color:red;'>"+rewords.data.uinfo.user_sign_rank+"</span>个签到,连续<span style='color:red;'>"+rewords.data.uinfo.cont_sign_num+"</span>天,共<span style='color:red;'>"+rewords.data.uinfo.cout_total_sing_num+"</span>天!---防和谐，等待6s ing...";
+					var  waittime=6000;
 				}
-				else if(ranks=="r\":\"\\u60a8\\u5c1a\\u5728\\u9ed1\\u540d\\u5355\\u4e2d\\uff0c\\u4e0d\\u80fd\\u64cd\\u4f5c\\u3002\""){
-					$(".white_content").get(0).innerHTML+="--<span style='color:red;'>您尚在黑名单中，不能操作.....</span> ";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					rt =  "err00";
+				else{
+					$(".Sign_MainDiv")[0].innerHTML+="--<span style='color:red;'>"+eval('"'+rewords.error+'"')+"</span>---防和谐，等待1s ing...";
+					var  waittime=1000;
 				}
-				else if(ranks=="r\":\"\\u5927\\u5bb6\\u90fd\\u5728\\u62a2\\u7b2c1\\uff0c\\u51fa\\u624b\\u6162\\u4e86\\u70b9\\uff0c\\u518d\\u7b7e\\u4e00\\u6b21\\u8bd5\\u8bd5\""){
-					$(".white_content").get(0).innerHTML+="--<span style='color:red;'>大家都在抢第1，出手慢了点，再签一次试试</span> --正在尝试重新签到...";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					bai--;
-					rt =  "err01";
-				}
-				else if(ranks=="r\":\"\\u7b7e\\u5230\\u592a\\u9891\\u7e41\\u4e86\\u70b9\\uff0c\\u4f11\\u606f\\u7247\\u523b\\u518d\\u6765\\u5427\""){
-					$(".white_content").get(0).innerHTML+="--<span style='color:red;'>签到太频繁了点，休息片刻再来吧...</span> --正在尝试重新签到...";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					//bai--;
-					rt =  "err02";
-				}
-				else if(ranks=="r\":\"\\u4eb2\\uff0c\\u5df2\\u7ecf\\u6210\\u529f\\u7b7e\\u5230\\u4e86\\u54e6~\""){
-					$(".white_content").get(0).innerHTML+="--<span style='color:red;'>亲，已经成功签到了哦...</span> ";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					//bai--;
-					rt =  "err03";
-				}
-				else {
-					//var ranks=cutchar(rewords,"\"error\":",",");
-					$(".white_content").get(0).innerHTML+="--签到失败，请将以下红色的错误信息以文字的方式反馈到专贴中,以便得到解决，谢谢你的支持： <span style='color:red;'>"+ranks+"</span> ";
-					$(".white_content").get(0).innerHTML+="---防和谐，等待1s ing...";
-					rt =  "err";
-				}
+				setTimeout("checksigned("+(bai+1)+");",waittime);
 		 }, 
 		 error: function () { 
-			 $(".white_content").get(0).innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
+			 $(".Sign_MainDiv")[0].innerHTML+="签到出现问题，马上重签！";
+			 signed(bai,tbs);
 		 } 
-	 });	
+	 });
+}
+
+
+
+
+function mark_cell(){//手机签到
+	BaseUrl=cutchar($("body")[0].innerHTML,'base_url: "','"');
+	countba_cell();//收集贴吧，开始运行签到程序
+}
+//查贴吧数量，收集贴吧
+function countba_cell(){
+	$(".Sign_BtnTop")[0].innerHTML="开始收集。。。";
+	$.ajax({
+		type: "get",url: "http://wapp.baidu.com/f/q-0---sz%40320_240%2C,sz@320_240-1-3-0--2/m?tn=bdFBW&tab=favorite&lp=7202",
+		data: "", dataType: "text", success: function (data) { 
+			//var dataObjs=$(data).find(".d a");
+			var dataObjs=data.split("m?kw");
+			for(var i=1;i<dataObjs.length;i++){
+				baObjs[i-1] =new Object;
+				baObjs[i-1].kw=cutchar(dataObjs[i],"=","\"");
+				baObjs[i-1].name=cutchar(dataObjs[i],"\">","</a>");
+			}
+			
+			// for(var i=0;i<dataObjs.length;i++){
+				// baObjs[i] =new Object;
+				// baObjs[i].name=dataObjs[i].innerHTML;
+				// baObjs[i].kw=dataObjs[i].href.split("/m?kw")[1];
+			// }
+			$(".Sign_BtnTop")[0].innerHTML="收集完毕！";
+			$(".Sign_BtnTop")[1].innerHTML="0 / "+baObjs.length;
+			$(".Sign_MainDiv")[0].innerHTML+="估测完毕:您喜欢的贴吧有"+(baObjs.length)+"个，最长将花费时间"+parseInt(baObjs.length*6/60)+"分"+(baObjs.length*6%60)+"秒";
+				$.ajax({
+					type: "get",url: "wapp.baidu.com/f/q-0---sz%401320_240%2C,-2-3-0--2/m?tn=bdIndex&lp=7202#like",
+					data: "", dataType: "text", success: function (data) { 
+					checksigned_cell(0);
+				 }, 
+				 error: function () { 
+					 $(".Sign_MainDiv")[0].innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
+				 } 
+			 });
+		 }, 
+		 error: function () { 
+			 $(".Sign_MainDiv")[0].innerHTML+="收集贴吧遇到问题，程序不能继续下去！请手动刷新后重新运行！";
+		 } 
+	 });
+}
+
+
+//检查该贴吧有没有签到
+function checksigned_cell(bai){
+	if(bai>=baObjs.length){
+		$(".Sign_MainDiv")[0].innerHTML+="<br>签到完毕！请自行检查有没有签到正确，如有错误，欢迎反馈<a href='http://tieba.baidu.com/p/1768731534'  target='_blank'>蝉曦吧反馈专用贴</a><br><br><br><br><br>";
+		$(".Sign_BtnTop")[2].innerHTML="<span style='color:red;'>签到完毕！</span>";//显示签到完毕
+		return 0;
+	}else{
+		$(".Sign_BtnTop")[1].innerHTML=(bai+1)+" / "+baObjs.length;//显示在签第几个
+		$(".Sign_MainDiv")[0].innerHTML+="<br>+"+(bai+1)+" .<a href='http://wapp.baidu.com"+BaseUrl+"m?kw="+baObjs[bai].kw+"&lp=1501' target='_blank'>"+baObjs[bai].name+"吧</a>";
+	}
+	$.ajax({
+		type: "get",url: "http://wapp.baidu.com"+BaseUrl+"m?kw="+baObjs[bai].kw+"&lp=1501",
+		data: "", dataType: "text", success: function (data) {
+
+			if(data.indexOf("sign_btn_cannot")>0){
+				$(".Sign_MainDiv")[0].innerHTML+="--本吧还没开放签到系统!---防和谐，等待1s ing...";
+				setTimeout("checksigned_cell("+(bai+1)+");",1000);
+				return 0;	
+			}else if(data.indexOf("sign_btn_had")>0){
+				$(".Sign_MainDiv")[0].innerHTML+="--已签到!---防和谐，等待1s ing...";
+				setTimeout("checksigned_cell("+(bai+1)+");",1000);
+			}else if(data.indexOf("sign_btn_wanted")>0){
+					$(".Sign_MainDiv")[0].innerHTML+="--未签到!";
+					baObjs[bai].tbs=cutchar(data,'tbs" : "','"');
+					baObjs[bai].fid=cutchar(data,'fid" : "','"');
+					signed_cell(bai);
+			}else{
+				$(".Sign_MainDiv")[0].innerHTML+="运行异常，请手动刷新后重新运行！";
+			}
+		},
+		 error: function () { 
+			$(".Sign_MainDiv")[0].innerHTML+="---检查出现问题，重新检查！";
+			setTimeout("checksigned_cell("+bai+");",1000);
+		 } 
+	});	
 	
 }
 
-
-
-
-
-function $id(id){
-	return document.getElementById(id);
+//对该贴吧进行签到
+function signed_cell(bai){
+	$.ajax({
+		 type: "get",url:  "http://wapp.baidu.com"+BaseUrl+"sign?tbs="+baObjs[bai].tbs+"&kw="+baObjs[bai].kw+"&is_like=1&fid="+baObjs[bai].fid,
+		 data: "",dataType: "text",success: function (data) { 
+			var rewords=eval('('+data+')');
+			if(rewords.error.length<4){
+				$(".Sign_MainDiv")[0].innerHTML += "经验+<span style='color:red;'>" + rewords.error + "</span>,第<span style='color:red;'>"+ rewords.data.add_sign_data.uinfo.user_sign_rank+"</span>个,连续<span style='color:red;'>"+rewords.data.add_sign_data.uinfo.cont_sign_num+"</span>天，累计<span style='color:red;'>"+rewords.data.add_sign_data.uinfo.cout_total_sing_num+"</span>天!---防和谐，等待6s ing...";
+				var  waittime=6000;
+			}else{
+				$(".Sign_MainDiv")[0].innerHTML+="--<span style='color:red;'>"+eval('"'+rewords.error+'"')+"</span>---防和谐，等待1s ing...";
+				var  waittime=1000;
+			}
+			setTimeout("checksigned_cell("+(bai+1)+");",waittime);
+		 }, 
+		 error: function () { 
+			 $(".Sign_MainDiv")[0].innerHTML+="签到出现问题，马上重签！";
+			 signed_cell(bai);
+		 } 
+	 });
 }
-function $tag(tag){
-	return document.getElementsByTagName(tag);
-}
-function $class(className){
-	return document.getElementsByClassName(id);
-}
 
-function createTag(tag,o,obj){
-	var a="id";
-	var e=document.createElement(tag);
-	for (var prop in obj) { 
-		e[prop]=obj[prop];
-	} 
-	o.appendChild(e);
-}
 
-function deleteTag(id){
-    var my = document.getElementById(id);
-    if (my != null)       my.parentNode.removeChild(my);
- }
-
-function div_allDis(){
-	document.getElementById('light').style.display='block';
-	document.getElementById('fade').style.display='block';
-	document.getElementById('mark_header').style.display='block';
-}
 function div_allHid(){
-	document.getElementById('light').style.display='none';
-	document.getElementById('fade').style.display='none';
-	document.getElementById('mark_header').style.display='none';
-	deleteTag("mybbb");
+	$(".Sign_Body").remove();
+//	location.href="http://adf.ly/LzLxo";
 }
 function cutchar(allstr,prechar,endchar){
 	var preposition=allstr.indexOf(prechar)+prechar.length;
 	var strlength=allstr.indexOf(endchar,preposition);
 	return allstr.substring(preposition,strlength);
-}
-
-function isCon(arr, val){
-	return arr.indexOf(val,0);
-}
-
-function changeStr(allstr,cbit,changeStr){ 
-	return allstr.substring(0,cbit)+changeStr+allstr.substring(cbit+1,allstr.length); 
-}
-   
-function Ajax(recvType){
-	var aj=new Object();
-	aj.recvType=recvType ? recvType.toUpperCase() : 'HTML' //HTML XML
-	aj.targetUrl='';//请求地址
-	aj.sendString='';//发送的字符串
-	aj.resultHandle=null;
-
-	aj.createXMLHttpRequest=function(){//创建ajax引擎对象
-		var request=false;
-
-		//window对象中有XMLHttpRequest存在就是非IE，包括（IE7，IE8）
-		if(window.XMLHttpRequest){
-			request=new XMLHttpRequest();
-
-			if(request.overrideMimeType){
-				request.overrideMimeType("text/xml");
-			}
-
-		//window对象中有ActiveXObject属性存在就是IE
-		}else if(window.ActiveXObject){
-
-			var versions=['Microsoft.XMLHTTP', 'MSXML.XMLHTTP', 'Msxml2.XMLHTTP.7.0','Msxml2.XMLHTTP.6.0','Msxml2.XMLHTTP.5.0', 'Msxml2.XMLHTTP.4.0', 'MSXML2.XMLHTTP.3.0', 'MSXML2.XMLHTTP'];
-
-			for(var i=0; i<versions.length; i++){
-					try{
-						request=new ActiveXObject(versions[i]);
-
-						if(request){
-							return request;
-						}
-					}catch(e){
-						request=false;
-					}
-			}
-		}
-		return request;
-	}
-
-	aj.XMLHttpRequest=aj.createXMLHttpRequest();//获取ajax引擎对象
-
-	aj.processHandle=function(){//判断状态
-		if(aj.XMLHttpRequest.readyState == 4){
-			if(aj.XMLHttpRequest.status == 200){
-				if(aj.recvType=="HTML")
-					aj.resultHandle(aj.XMLHttpRequest.responseText);
-				else if(aj.recvType=="XML")
-					aj.resultHandle(aj.XMLHttpRequest.responseXML);
-			}
-		}
-	}
-
-	aj.get=function(targetUrl, resultHandle){
-		aj.targetUrl=targetUrl;	
-		if(resultHandle!=null){
-			aj.XMLHttpRequest.onreadystatechange=aj.processHandle;
-			aj.resultHandle=resultHandle;	//接收回调方法
-		}
-		if(window.XMLHttpRequest){
-			aj.XMLHttpRequest.open("get", aj.targetUrl);
-			aj.XMLHttpRequest.send(null);
-		}else{
-			aj.XMLHttpRequest.open("get", aj.targetUrl, true);
-			aj.XMLHttpRequest.send();
-		}
-	}
-
-	aj.post=function(targetUrl, sendString, resultHandle){
-		aj.targetUrl=targetUrl;
-
-		if(typeof(sendString)=="object"){
-			var str="";
-			for(var pro in sendString){
-				str+=pro+"="+sendString[pro]+"&";
-			}
-			aj.sendString=str.substr(0, str.length-1);
-		}else{
-			aj.sendString=sendString;
-		}
-		if(resultHandle!=null){
-			aj.XMLHttpRequest.onreadystatechange=aj.processHandle;
-			aj.resultHandle=resultHandle;
-		}
-		aj.XMLHttpRequest.open("post", targetUrl);
-		aj.XMLHttpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		aj.XMLHttpRequest.send(aj.sendString);
-	}
-	return aj;
 }
