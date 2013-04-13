@@ -1,4 +1,4 @@
-//一件转贴
+//一键转贴
 //S_rePrint("蝉曦")
 S_rePrint(prompt("输入要转到的贴吧"));
 var S_ccObjs="";
