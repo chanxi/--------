@@ -5,10 +5,10 @@ var S_ccObjs="";
 var S_newUrl="";
 function S_rePrint(S_forumName){
   $("body").append('<iframe style="width:1000px;height:500px;z-index:99999;position:absolute;top:30px;right:5px;" id="Reprint"></iframe>');
-	$("#Reprint")[0].src="http://tieba.baidu.com";
+	$("#Reprint")[0].src="http://tieba.baidu.com/p/2049879754";
 	$("#Reprint").one("load", function(){
 		$("#Reprint").contents().find(".tb_header_search_input")[0].value=S_forumName;
-		$("#Reprint").contents().find("#search_submit").trigger("click");//转到置顶贴吧
+		$("#Reprint").contents().find(".search_btn,#search_submit").trigger("click");//转到置顶贴吧
 		$("#Reprint").one("load", function(){
 			$("#Reprint").contents().find("#title1")[0].value=PageData.thread.title;//主题名
 			$("#Reprint").contents().find(".tb-editor-editarea:last")[0].innerHTML="转自:"+PageData.forum_name+"吧<br>原帖名:"+PageData.thread.title+"<br>原作者:@"+PageData.thread.author+"  <br>原地址:http://tieba.baidu.com/p/"+PageData.thread.id+"<br>以下为原帖内容,机器转帖,未做任何修改:";//一楼著名来源信息
