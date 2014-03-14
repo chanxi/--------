@@ -138,15 +138,15 @@ function show_BaseDiv(){
 		"<span class='pt15'><a href='http://tieba.baidu.com/p/2110672062?see_lz=1'  target='_blank'>蝉曦吧地址更新专用帖</a></span><br/>"+
 	// "<span style='color:red;'>代码修改中，期间使用本签到可能出现故障，请稍候再用</span><br/>"+
 		"请注意:请在自动签到的时候，放慢你的发帖和回复速度，防止应为操作过频被度受和谐ID。<br/>"+
-		"------2013.04.03 v1.2.2------<br/>"+		
-		"更新1.修复由于i贴吧部分页面下线导致的贴吧收集障碍<br/>"+
+		"------2014.03.014v1.2.4------<br/>"+		
+		"更新1.修复由于贴吧页面代码更新导致的运行异常<br/>"+
 		"提示1.新版模拟手机签到的代码可以需运行在智能版贴吧上<br/>"+
 		"提示2.模拟手机签到可以运行在chrome、Firefox、还有各种双核浏览器的极速模式之下<br/>"+
 		"<span style='color:green;'>------------------------------</span><br/>"+
 		"ios（越狱）和android版签到工具，请前往<a href='http://tieba.baidu.com/p/2047715431?see_lz=1' target='_blank'>手机签到工具</a>支持并提供宝贵意见，本工具相对别的签到工具的优点是:省流量；100个贴吧的签到约为300KB的流量左右<br/>";
 
-	document.getElementById("Sign_MainDiv").innerHTML="请使用本工具的人能够将代码书签的地址改成googlecode的地址:<br/>"+
-		"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://chanxi.googlecode.com/files/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br/>"+
+	document.getElementById("Sign_MainDiv").innerHTML="请使用本工具的人能够将代码书签的地址改成ichanxi的地址:<br/>"+
+		"javascript:void((function(){var e=document.createElement('script');e.type='text/javascript';e.charset='UTF-8';e.src='http://ichanxi.tk/script/sign.js'+'?m='+Math.random();document.body.appendChild(e)})());<br/>"+
 		"以下地址一段时间内将不会保证代码的稳定性、可用性和更新状态<br/>"+
 		"http://pastebin.com/raw.php?i=YGb5nCmY<br/>"+
 		"https://raw.github.com/chanxi/--------/master/sign.js<br/>"+
